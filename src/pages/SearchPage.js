@@ -5,6 +5,10 @@ import { Link } from 'react-router-dom'
 
 class SearchPage extends React.Component {
 
+    componentDidMount(){
+        console.log('ALL BOOKS', this.props.books)
+    }
+
     state = {
         query: ''
     }
@@ -15,10 +19,24 @@ class SearchPage extends React.Component {
         }))
     }
 
+    clearQuery = () => {
+        this.updateQuery('')
+    }
+
     render() {
 
         const { query } = this.state
+        const { books } = this.props
+
         console.log(query)
+
+        const showingBooks = query === ''
+        ? books
+        : books.filter((c) => (
+            c.title.toLowerCase().includes(query.toLowerCase())
+        ))
+
+        console.log(showingBooks)
 
         return (
             <div>
@@ -27,12 +45,12 @@ class SearchPage extends React.Component {
                         className='close-search-page'
                         to='/'>
                         Close
-                </Link>
+                    </Link>
 
                     <div className="search-books-input-wrapper">
                         <input 
                             type="text" 
-                            placeholder="Search by title or authorz" 
+                            placeholder="Search by title or author" 
                             value={query}
                             onChange={(event) => this.updateQuery(event.target.value)}
                         />
@@ -41,7 +59,9 @@ class SearchPage extends React.Component {
                 </div>
                 <div className="search-books-results">
                     <ol className="books-grid">
-                        
+                    {showingBooks.map((book) => (
+                        <p>{book.title}</p>
+                    ))}
                     </ol>
                 </div>
             </div>
