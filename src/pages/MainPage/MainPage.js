@@ -7,8 +7,6 @@ import * as BooksAPI from '../../BooksAPI'
 
 class MainPage extends React.Component {
 
-
-
     shelves = [
         {
             id: 1,
@@ -25,36 +23,21 @@ class MainPage extends React.Component {
     ]
 
     state = {
-        allBooks: [],
-        currentlyReading: [
-            {
-                id: 'sss',
-                name: 'sdasadsd',
-                author: 'asdas',
-                coverURL: 'asdsadsadsd'
-            },
-            {
-                id: 'sss',
-                name: 'sdasadsd',
-                author: 'asdas',
-                coverURL: 'asdsadsadsd'
-            }
-        ],
-        wantToRead: [],
-        read: [],
+        books: []
     }
 
     componentDidMount() {
         BooksAPI.getAll()
-            .then((allBooks) => {
+            .then((books) => {
                 this.setState(() => ({
-                    allBooks
+                    books
                 }))
             })
-
     }
 
     render() {
+
+        console.log('All Books', this.state.books)
         return (
             <div className="list-books">
                 <div className="list-books-title">
