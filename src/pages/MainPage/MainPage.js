@@ -38,6 +38,7 @@ class MainPage extends React.Component {
     render() {
 
         console.log('All Books', this.state.books)
+
         return (
             <div className="list-books">
                 <div className="list-books-title">
@@ -48,13 +49,13 @@ class MainPage extends React.Component {
                         {this.shelves.map((shelf) => (
                             <div>
                                 {shelf.shelfName === 'Currently Reading' && (
-                                    <BookShelf key={shelf.id} shelf={shelf.shelfName} books={this.state.currentlyReading} />
+                                    <BookShelf key={shelf.id} shelf={shelf.shelfName} books={this.state.books.filter((book) => book.shelf === 'currentlyReading')} />
                                 )}
                                 {shelf.shelfName === 'Want To Read' && (
-                                    <BookShelf key={shelf.id} shelf={shelf.shelfName} />
+                                    <BookShelf key={shelf.id} shelf={shelf.shelfName} books={this.state.books.filter((book) => book.shelf === 'wantToRead')}/>
                                 )}
                                 {shelf.shelfName === 'Read' && (
-                                    <BookShelf key={shelf.id} shelf={shelf.shelfName} />
+                                    <BookShelf key={shelf.id} shelf={shelf.shelfName} books={this.state.books.filter((book) => book.shelf === 'read')}/>
                                 )}
                             </div>
                         ))}

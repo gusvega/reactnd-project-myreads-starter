@@ -1,10 +1,17 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Book from '../components/Book'
+import PropTypes from 'prop-types'
+
 
 
 
 class SearchPage extends React.Component {
+
+    static propTypes = {
+        books: PropTypes.array.isRequired,
+        onChangeState: PropTypes.func.isRequired
+    }
 
     componentDidMount(){
         console.log('ALL BOOKS', this.props.books)
@@ -27,7 +34,7 @@ class SearchPage extends React.Component {
     render() {
 
         const { query } = this.state
-        const { books } = this.props
+        const { books, onChangeState } = this.props
 
         console.log(query)
 
@@ -61,7 +68,7 @@ class SearchPage extends React.Component {
                 <div className="search-books-results">
                     <ol className="books-grid">
                     {showingBooks.map((book) => (
-                        <Book bookDetails={book}></Book>
+                        <Book key={book.id} bookDetails={book} onChangeState={onChangeState}></Book>
                     ))}
                     </ol>
                 </div>

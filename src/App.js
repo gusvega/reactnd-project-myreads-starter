@@ -34,7 +34,7 @@ componentDidMount() {
           </Route> 
         
         <Route exact path='/search' >
-          <SearchPage books={this.state.books}></SearchPage>
+          <SearchPage books={this.state.books} onChangeState={this.changeState} ></SearchPage>
         </Route>
 
       </div>
