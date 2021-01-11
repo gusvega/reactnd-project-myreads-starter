@@ -23,14 +23,21 @@ export const getAll = () =>
     .then(data => data.books)
 
 export const update = (book, shelf) =>
-  fetch(`${api}/books/${book.id}`, {
+  fetch(`${api}/books/${book}`, {
     method: 'PUT',
     headers: {
       ...headers,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ shelf })
-  }).then(res => res.json())
+    body: JSON.stringify(
+      { 
+        'shelf' : shelf 
+      }
+    )
+  }).then(res => {
+    res.json()
+    // console.log(shelf, `${api}/books/${book}`)
+  })
 
 export const search = (query) =>
   fetch(`${api}/search`, {

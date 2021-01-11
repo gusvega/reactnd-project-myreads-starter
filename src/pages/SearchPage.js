@@ -2,29 +2,35 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import Book from '../components/Book'
 import PropTypes from 'prop-types'
-
+import * as BooksAPI from '../BooksAPI'
 
 
 
 class SearchPage extends React.Component {
 
     static propTypes = {
-        books: PropTypes.array.isRequired,
-        onChangeState: PropTypes.func.isRequired
+        books: PropTypes.array.isRequired
     }
 
-    componentDidMount(){
+    componentDidMount() {
         console.log('ALL BOOKS', this.props.books)
     }
 
     state = {
-        query: ''
+        query: '',
+        searchedBooks: []
     }
 
     updateQuery = (query) => {
-        this.setState(() => ({
-            query: query.trim()
-        }))
+        console.log(query)
+
+        BooksAPI.search(query)
+            .then((searchedBooks) => {
+                this.setState(() => ({
+                    query: query.trim(),
+                    searchedBooks: searchedBooks
+                }))
+            })
     }
 
     clearQuery = () => {
@@ -33,18 +39,17 @@ class SearchPage extends React.Component {
 
     render() {
 
-        const { query } = this.state
-        const { books, onChangeState } = this.props
+        const { query, searchedBooks } = this.state
 
-        console.log(query)
+        console.log('SEARCHED BOOKS', this.state.searchedBooks)
 
         const showingBooks = query === ''
-        ? books
-        : books.filter((c) => (
-            c.title.toLowerCase().includes(query.toLowerCase())
-        ))
+            ? searchedBooks
+            : searchedBooks.filter((c) => (
+                c.title.toLowerCase().includes(query.toLowerCase())
+            ))
 
-        console.log(showingBooks)
+        // console.log(showingBooks)
 
         return (
             <div>
@@ -56,9 +61,9 @@ class SearchPage extends React.Component {
                     </Link>
 
                     <div className="search-books-input-wrapper">
-                        <input 
-                            type="text" 
-                            placeholder="Search by title or author" 
+                        <input
+                            type="text"
+                            placeholder="Search by title or author"
                             value={query}
                             onChange={(event) => this.updateQuery(event.target.value)}
                         />
@@ -67,9 +72,9 @@ class SearchPage extends React.Component {
                 </div>
                 <div className="search-books-results">
                     <ol className="books-grid">
-                    {showingBooks.map((book) => (
-                        <Book key={book.id} bookDetails={book} onChangeState={onChangeState}></Book>
-                    ))}
+                        {showingBooks.map((book) => (
+                            <Book key={book.id} bookDetails={book} ></Book>
+                        ))}
                     </ol>
                 </div>
             </div>
