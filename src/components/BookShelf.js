@@ -3,15 +3,10 @@ import Book from './Book'
 
 class BookShelf extends React.Component {
 
-    state = {
-        query: ''
-    }
-
-
     render() {
 
         const {shelf, books} = this.props
-        console.log(books)
+        console.log('BOOKS FROM PROPS', books)
 
         return (
             <div className="bookshelf">

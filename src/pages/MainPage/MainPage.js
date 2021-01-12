@@ -1,10 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import BookShelf from '../../components/BookShelf'
-import * as BooksAPI from '../../BooksAPI'
-
-
-
 class MainPage extends React.Component {
 
     shelves = [
@@ -22,22 +18,10 @@ class MainPage extends React.Component {
         }
     ]
 
-    state = {
-        books: []
-    }
-
-    componentDidMount() {
-        BooksAPI.getAll()
-            .then((books) => {
-                this.setState(() => ({
-                    books
-                }))
-            })
-    }
-
     render() {
 
-        console.log('All Books', this.state.books)
+        console.log('PROPS', this.props.state.books)
+
 
         return (
             <div className="list-books">
@@ -49,13 +33,13 @@ class MainPage extends React.Component {
                         {this.shelves.map((shelf) => (
                             <div>
                                 {shelf.shelfName === 'Currently Reading' && (
-                                    <BookShelf key={shelf.id} shelf={shelf.shelfName} books={this.state.books.filter((book) => book.shelf === 'currentlyReading')} />
+                                    <BookShelf key={shelf.id} shelf={shelf.shelfName} books={this.props.state.books.filter((book) => book.shelf === 'currentlyReading')} />
                                 )}
                                 {shelf.shelfName === 'Want To Read' && (
-                                    <BookShelf key={shelf.id} shelf={shelf.shelfName} books={this.state.books.filter((book) => book.shelf === 'wantToRead')}/>
+                                    <BookShelf key={shelf.id} shelf={shelf.shelfName} books={this.props.state.books.filter((book) => book.shelf === 'wantToRead')}/>
                                 )}
                                 {shelf.shelfName === 'Read' && (
-                                    <BookShelf key={shelf.id} shelf={shelf.shelfName} books={this.state.books.filter((book) => book.shelf === 'read')}/>
+                                    <BookShelf key={shelf.id} shelf={shelf.shelfName} books={this.props.state.books.filter((book) => book.shelf === 'read')}/>
                                 )}
                             </div>
                         ))}

@@ -12,10 +12,6 @@ class SearchPage extends React.Component {
         books: PropTypes.array.isRequired
     }
 
-    componentDidMount() {
-        console.log('ALL BOOKS', this.props.books)
-    }
-
     state = {
         query: '',
         searchedBooks: []
@@ -33,15 +29,13 @@ class SearchPage extends React.Component {
             })
     }
 
-    clearQuery = () => {
-        this.updateQuery('')
-    }
-
     render() {
 
         const { query, searchedBooks } = this.state
 
         console.log('SEARCHED BOOKS', this.state.searchedBooks)
+        console.log(this.props.onAddBook)
+
 
         const showingBooks = query === ''
             ? searchedBooks
@@ -73,7 +67,7 @@ class SearchPage extends React.Component {
                 <div className="search-books-results">
                     <ol className="books-grid">
                         {showingBooks.map((book) => (
-                            <Book key={book.id} bookDetails={book} ></Book>
+                            <Book key={book.id} bookDetails={book}></Book>
                         ))}
                     </ol>
                 </div>
