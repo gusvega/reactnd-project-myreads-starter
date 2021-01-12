@@ -25,12 +25,32 @@ class BooksApp extends React.Component {
       })
   }
 
+  updateState= (book, shelf) => {
+    console.log('Update State Executed', book.shelf)
+
+    this.setState((prevState) => ({
+      contacts: prevState.books.filter((c) => {
+        if(c.id === book.id){
+          c.shelf = shelf
+          console.log(c.shelf)
+        }
+
+        return c.shelf
+
+
+      })
+    }))
+    
+    console.log('Update State Executed', book.shelf)
+
+  }
+    
   render() {
     return (
       <div className="app">
 
         <Route exact path='/'>
-          <MainPage state={this.state}></MainPage>
+          <MainPage books={this.state.books} updateState={this.updateState}></MainPage>
         </Route>
 
         <Route exact path='/search' >
