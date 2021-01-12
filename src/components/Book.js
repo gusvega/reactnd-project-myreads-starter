@@ -19,7 +19,7 @@ class Book extends React.Component {
                     <div className="book-shelf-changer">
                         <select value={bookDetails.shelf} onChange={(event) => {
                                 BooksAPI.update(bookDetails.id, event.target.value).then(() => {
-                                    this.props.updateState(bookDetails)
+                                    // this.props.updateState(bookDetails)
                                 })
                             }}>
                             <option value="move" disabled>Move to...</option>

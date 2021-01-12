@@ -36,10 +36,10 @@ class MainPage extends React.Component {
                                     <BookShelf key={shelf.id} updateState={this.props.updateState} shelf={shelf.shelfName} books={this.props.books.filter((book) => book.shelf === 'currentlyReading')} />
                                 )}
                                 {shelf.shelfName === 'Want To Read' && (
-                                    <BookShelf key={shelf.id} shelf={shelf.shelfName} books={this.props.books.filter((book) => book.shelf === 'wantToRead')}/>
+                                    <BookShelf key={shelf.id} updateState={this.props.updateState} shelf={shelf.shelfName} books={this.props.books.filter((book) => book.shelf === 'wantToRead')}/>
                                 )}
                                 {shelf.shelfName === 'Read' && (
-                                    <BookShelf key={shelf.id} shelf={shelf.shelfName} books={this.props.books.filter((book) => book.shelf === 'read')}/>
+                                    <BookShelf key={shelf.id} updateState={this.props.updateState} shelf={shelf.shelfName} books={this.props.books.filter((book) => book.shelf === 'read')}/>
                                 )}
                             </div>
                         ))}
