@@ -43,10 +43,13 @@ class BooksApp extends React.Component {
     console.log('Book:',book, 'Shelf: ', shelf)
   }
 
-  updateStateFromSearch(){
-    this.setState(() => ({
-      books
-    }))
+  updateStateFromSearch(books){
+    BooksAPI.getAll()
+      .then((books) => {
+        this.setState(() => ({
+          books
+        }))
+      })
   }
     
   render() {

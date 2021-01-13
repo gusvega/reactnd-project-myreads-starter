@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from '../BooksAPI'
 
+
 class SearchPage extends React.Component {
 
     state = {
@@ -13,25 +14,36 @@ class SearchPage extends React.Component {
     updateQuery = (query) => {
         console.log(query)
 
-        BooksAPI.search(query)
+        if(query){
+            BooksAPI.search(query)
             .then((searchedBooks) => {
 
-                if(searchedBooks.length > 0){
+                this.setState(() => ({
+                    query: query.trim(),
+                    books: searchedBooks
+                }))
+
+                if(this.state.books.length > 0){
+                    console.log('SEARCHED BOOKS', searchedBooks)
                     searchedBooks = query === ''
                     ? searchedBooks
                     : searchedBooks.filter((c) => {
                         return c.title.toLowerCase().includes(query.toLowerCase())
                     })
-                }else if(searchedBooks === undefined){
-                    console.log('NO HAY')
+                    console.log('BOOKS FROM STATE', this.state.books)
                 }
-                 
-                this.setState(() => ({
-                    query: query.trim(),
-                    books: searchedBooks
-                }))
+                
+ 
                 console.log(searchedBooks)
             })
+        }else{
+            this.setState({
+                query: '',
+                books: [] 
+            })
+            console.log('ERROR')
+        }
+        
     }
 
 
@@ -52,16 +64,20 @@ class SearchPage extends React.Component {
                     <div className="search-books-input-wrapper">
                         <input
                             type="text"
+                            id='myInput'
                             placeholder="Search by title or author"
                             value={query}
-                            onChange={(event) => this.updateQuery(event.target.value)}
+                            onChange={(event) => {
+                                this.updateQuery(event.target.value)
+                            }}
                         />
 
                     </div>
                 </div>
                 <div className="search-books-results">
                     <ol className="books-grid">
-                        {books.map((book) => (
+                        { books.length > 0 ?
+                            books.map((book) => (
                             <div key={book.id} className="book">
                                 <div className="book-top">
                                     <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }}></div>
@@ -69,7 +85,7 @@ class SearchPage extends React.Component {
                                         <select value={book.shelf} onChange={(event) => {
                                             this.shelf = event.target.value
                                             BooksAPI.update(book.id, this.shelf)
-                                            updateState()
+                                            updateState(books)
                                         }}>
                                             <option value="move" disabled>Move to...</option>
                                             <option value="currentlyReading" >Currently Reading</option>
@@ -82,7 +98,7 @@ class SearchPage extends React.Component {
                                 <div className="book-title">{book.title}</div>
                                 <div className="book-authors">{book.authors}</div>
                             </div>
-                        ))}
+                        )) : <p>Nothing here yet</p>}
                     </ol>
                 </div>
             </div>
