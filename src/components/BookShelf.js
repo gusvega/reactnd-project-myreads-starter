@@ -9,19 +9,14 @@ class BookShelf extends React.Component {
 
     render() {
 
-        const { shelf, books } = this.props
+        const { shelf, books, updateState} = this.props
         // console.log('BOOKS FROM PROPS', books)
 
         return (
             <div className="bookshelf">
-
                 <h2 className="bookshelf-title">{shelf}</h2>
-
-
                 <div className="bookshelf-books">
-
                     <ol className="books-grid">
-
                         {books.map((book) => (
                             <div key={book.id} className="book">
                                 <div className="book-top">
@@ -29,8 +24,8 @@ class BookShelf extends React.Component {
                                     <div className="book-shelf-changer">
                                         <select value={book.shelf} onChange={(event) => {
                                             this.shelf = event.target.value
-                                            BooksAPI.update(book.id, event.target.value).then(() => {
-                                                this.props.updateState(book, this.shelf)
+                                            BooksAPI.update(book.id, this.shelf).then(() => {
+                                                updateState(book, this.shelf)
                                             })
                                         }}>
                                             <option value="move" disabled>Move to...</option>

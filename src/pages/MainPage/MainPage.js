@@ -20,8 +20,8 @@ class MainPage extends React.Component {
 
     render() {
 
-        console.log('PROPS', this.props.books)
-
+        // console.log('PROPS', this.props.books)
+        const { books, updateState } = this.props
 
         return (
             <div className="list-books">
@@ -33,17 +33,16 @@ class MainPage extends React.Component {
                         {this.shelves.map((shelf) => (
                             <div key={shelf.id}>
                                 {shelf.shelfName === 'Currently Reading' && (
-                                    <BookShelf key={shelf.id} updateState={this.props.updateState} shelf={shelf.shelfName} books={this.props.books.filter((book) => book.shelf === 'currentlyReading')} />
+                                    <BookShelf key={shelf.id} updateState={updateState} shelf={shelf.shelfName} books={books.filter((book) => book.shelf === 'currentlyReading')} />
                                 )}
                                 {shelf.shelfName === 'Want To Read' && (
-                                    <BookShelf key={shelf.id} updateState={this.props.updateState} shelf={shelf.shelfName} books={this.props.books.filter((book) => book.shelf === 'wantToRead')}/>
+                                    <BookShelf key={shelf.id} updateState={updateState} shelf={shelf.shelfName} books={books.filter((book) => book.shelf === 'wantToRead')}/>
                                 )}
                                 {shelf.shelfName === 'Read' && (
-                                    <BookShelf key={shelf.id} updateState={this.props.updateState} shelf={shelf.shelfName} books={this.props.books.filter((book) => book.shelf === 'read')}/>
+                                    <BookShelf key={shelf.id} updateState={updateState} shelf={shelf.shelfName} books={books.filter((book) => book.shelf === 'read')}/>
                                 )}
                             </div>
                         ))}
-
                     </div>
                 </div>
                 <div className="open-search">

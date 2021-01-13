@@ -26,39 +26,39 @@ class BooksApp extends React.Component {
   }
 
   updateState= (book, shelf) => {
-    console.log('Update State Executed', book.shelf)
-
     this.setState((prevState) => ({
-      contacts: prevState.books.filter((c) => {
+      books: prevState.books.filter((c) => {
         if(c.id === book.id){
-          c.shelf = shelf
+          if(c.shelf){
+            c.shelf = shelf
+          }else{
+            console.log('DOES NOT HAVE A SHELF')
+          }
           console.log(c.shelf)
         }
-
         return c.shelf
-
-
       })
     }))
-    
-    console.log('Update State Executed', book.shelf)
+    console.log('Update State Executed', shelf)
+    console.log('Book:',book, 'Shelf: ', shelf)
+  }
 
+  updateStateFromSearch(){
+    this.setState(() => ({
+      books
+    }))
   }
     
   render() {
     return (
       <div className="app">
-
         <Route exact path='/'>
           <MainPage books={this.state.books} updateState={this.updateState}></MainPage>
         </Route>
 
         <Route exact path='/search' >
-          <SearchPage state={this.state}></SearchPage>
+          <SearchPage updateState={this.updateStateFromSearch} ></SearchPage>
         </Route>
-
-
-
       </div>
     )
   }
