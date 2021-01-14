@@ -8,12 +8,11 @@ import * as BooksAPI from './BooksAPI'
 
 
 
-const books = [];
 
 class BooksApp extends React.Component {
 
   state = {
-    books
+    books: []
   }
 
   componentDidMount() {
@@ -23,6 +22,7 @@ class BooksApp extends React.Component {
           books
         }))
       })
+
   }
 
   updateState= (book, shelf) => {
@@ -43,16 +43,18 @@ class BooksApp extends React.Component {
     console.log('Book:',book, 'Shelf: ', shelf)
   }
 
-  updateStateFromSearch(books){
-    BooksAPI.getAll()
-      .then((books) => {
-        this.setState(() => ({
-          books
+  updateFromSearch = (newBook) => {
+        this.setState((prevState) => ({
+          books: prevState.books.concat([newBook])
         }))
-      })
+        console.log('updateFromSearch Executed', this.state.books)
   }
     
   render() {
+
+    console.log('All Books: ', this.state.books)
+
+
     return (
       <div className="app">
         <Route exact path='/'>
@@ -60,7 +62,7 @@ class BooksApp extends React.Component {
         </Route>
 
         <Route exact path='/search' >
-          <SearchPage updateState={this.updateStateFromSearch} ></SearchPage>
+          <SearchPage booksFromMainState={this.state.books} updateFromSearch={this.updateFromSearch}></SearchPage>
         </Route>
       </div>
     )

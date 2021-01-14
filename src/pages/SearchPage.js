@@ -2,13 +2,13 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from '../BooksAPI'
 
-
 class SearchPage extends React.Component {
 
     state = {
         query: '',
         books: []
     }
+    
 
 
     updateQuery = (query) => {
@@ -24,13 +24,11 @@ class SearchPage extends React.Component {
                 }))
 
                 if(this.state.books.length > 0){
-                    console.log('SEARCHED BOOKS', searchedBooks)
                     searchedBooks = query === ''
                     ? searchedBooks
                     : searchedBooks.filter((c) => {
                         return c.title.toLowerCase().includes(query.toLowerCase())
                     })
-                    console.log('BOOKS FROM STATE', this.state.books)
                 }
                 
  
@@ -39,18 +37,21 @@ class SearchPage extends React.Component {
         }else{
             this.setState({
                 query: '',
-                books: [] 
+                books: [],
+                booksFromMainState: [] 
             })
             console.log('ERROR')
         }
         
     }
 
-
     render() {
 
+
         const { query, books } = this.state
-        const { updateState } = this.props
+        const { updateFromSearch, booksFromMainState } = this.props
+
+        console.log('booksFromMainState', booksFromMainState)
 
         return (
             <div>
@@ -79,18 +80,27 @@ class SearchPage extends React.Component {
                         { books.length > 0 ?
                             books.map((book) => (
                             <div key={book.id} className="book">
+
                                 <div className="book-top">
                                     <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }}></div>
                                     <div className="book-shelf-changer">
-                                        <select value={book.shelf} onChange={(event) => {
+                                        <select 
+                                        onChange={(event) => {
                                             this.shelf = event.target.value
                                             BooksAPI.update(book.id, this.shelf)
-                                            updateState(books)
+                                            BooksAPI.get(book.id).then((newBook) => {
+                                                updateFromSearch(newBook)
+                                                console.log('mainStateBooks', newBook)
+                                            }) 
+
+
+
+                                            
                                         }}>
-                                            <option value="move" disabled>Move to...</option>
+\                                            <option value="move" disabled>Move to...</option>
                                             <option value="currentlyReading" >Currently Reading</option>
                                             <option value="wantToRead" >Want to Read</option>
-                                            <option value="read">Read</option>
+                                            <option value="read" >Read</option>
                                             <option value="none">None</option>
                                         </select>
                                     </div>

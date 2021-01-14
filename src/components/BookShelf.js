@@ -10,7 +10,6 @@ class BookShelf extends React.Component {
     render() {
 
         const { shelf, books, updateState} = this.props
-        // console.log('BOOKS FROM PROPS', books)
 
         return (
             <div className="bookshelf">

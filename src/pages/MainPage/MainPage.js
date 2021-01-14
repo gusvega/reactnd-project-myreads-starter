@@ -20,8 +20,10 @@ class MainPage extends React.Component {
 
     render() {
 
-        // console.log('PROPS', this.props.books)
+        
         const { books, updateState } = this.props
+        console.log('BOOKS-', books)
+
 
         return (
             <div className="list-books">
