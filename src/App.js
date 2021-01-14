@@ -15,14 +15,9 @@ class BooksApp extends React.Component {
     books: []
   }
 
-  componentDidMount() {
-    BooksAPI.getAll()
-      .then((books) => {
-        this.setState(() => ({
-          books
-        }))
-      })
-
+  async componentDidMount() {
+   const books = await BooksAPI.getAll()
+    this.setState({books})
   }
 
   updateState = (book, shelf) => {
@@ -40,8 +35,9 @@ class BooksApp extends React.Component {
 
   updateFromSearch = (newBook) => {
     this.setState((prevState) => ({
-      books: prevState.books.concat([newBook])
+      books: prevState.books.filter((c) => c.id !== newBook.id).concat([newBook])
     }))
+    console.log('Main State', this.state.books)
   }
 
   render() {

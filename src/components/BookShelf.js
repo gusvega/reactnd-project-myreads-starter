@@ -1,13 +1,29 @@
 import React from 'react'
 import * as BooksAPI from '../BooksAPI'
+import PropTypes from 'prop-types'
+
 
 class BookShelf extends React.Component {
 
+    static propTypes = {
+        books: PropTypes.array.isRequired,
+        updateState: PropTypes.func.isRequired,
+        shelf: PropTypes.string.isRequired
+    }
+
     shelf = ''
+
+    // handleChange(shelf, book, ){
+    //     this.shelf = shelf
+    //     BooksAPI.update(book.id, this.shelf).then(() => {
+    //         this.props.updateState(book, this.shelf)
+    //     })
+    // }
 
     render() {
 
         const { shelf, books, updateState } = this.props
+        console.log(books)
 
         return (
             <div className="bookshelf">
@@ -34,7 +50,7 @@ class BookShelf extends React.Component {
                                     </div>
                                 </div>
                                 <div className="book-title">{book.title}</div>
-                                <div className="book-authors">{book.authors}</div>
+                                <div className="book-authors">{book.authors && book.authors.join(', ')}</div>
                             </div>
                         ))}
                     </ol>

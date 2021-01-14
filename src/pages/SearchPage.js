@@ -14,13 +14,17 @@ class SearchPage extends React.Component {
         console.log(query)
 
         if (query) {
+            this.setState({
+                query: query
+            })
             BooksAPI.search(query)
                 .then((searchedBooks) => {
 
                     this.setState(() => ({
-                        query: query.trim(),
                         books: searchedBooks
                     }))
+                    console.log('searchedBooks: ', searchedBooks)
+
 
                     if (this.state.books.length > 0) {
                         searchedBooks = query === ''
@@ -33,8 +37,7 @@ class SearchPage extends React.Component {
         } else {
             this.setState({
                 query: '',
-                books: [],
-                booksFromMainState: []
+                books: []
             })
         }
 
@@ -43,7 +46,9 @@ class SearchPage extends React.Component {
     render() {
 
         const { query, books } = this.state
-        const { updateFromSearch } = this.props
+        const { updateFromSearch, booksFromMainState } = this.props
+
+        console.log('Books: ', books)
 
         return (
             <div>
@@ -70,19 +75,26 @@ class SearchPage extends React.Component {
                 <div className="search-books-results">
                     <ol className="books-grid">
                         {books.length > 0 ?
+
                             books.map((book) => (
+
                                 <div key={book.id} className="book">
 
                                     <div className="book-top">
-                                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }}></div>
+                                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks && book.imageLinks.smallThumbnail})` }}></div>
+
                                         <div className="book-shelf-changer">
                                             <select
+                                                value={!book.shelf ? 'none' : book.shelf} 
+                                                // defaultValue={'none'}
                                                 onChange={(event) => {
                                                     this.shelf = event.target.value
                                                     BooksAPI.update(book.id, this.shelf)
                                                     BooksAPI.get(book.id).then((newBook) => {
                                                         updateFromSearch(newBook)
                                                     })
+                                                    console.log('booksFromMainState: ', booksFromMainState)
+
                                                 }}>
                                                 <option value="move" disabled>Move to...</option>
                                                 <option value="currentlyReading" >Currently Reading</option>
@@ -93,9 +105,9 @@ class SearchPage extends React.Component {
                                         </div>
                                     </div>
                                     <div className="book-title">{book.title}</div>
-                                    <div className="book-authors">{book.authors}</div>
+                                    <div className="book-authors">{book.authors && book.authors.join(', ')}</div>
                                 </div>
-                            )) : <p>Nothing here yet</p>}
+                            )) : <p>Nothing here</p>}
                     </ol>
                 </div>
             </div>

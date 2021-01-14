@@ -5,15 +5,15 @@ class MainPage extends React.Component {
 
     shelves = [
         {
-            id: 1,
+            id: 'currentlyReading',
             shelfName: 'Currently Reading'
         },
         {
-            id: 2,
+            id: 'wantToRead',
             shelfName: 'Want To Read'
         },
         {
-            id: 3,
+            id: 'read',
             shelfName: 'Read'
         }
     ]
@@ -32,15 +32,7 @@ class MainPage extends React.Component {
                     <div>
                         {this.shelves.map((shelf) => (
                             <div key={shelf.id}>
-                                {shelf.shelfName === 'Currently Reading' && (
-                                    <BookShelf key={shelf.id} updateState={updateState} shelf={shelf.shelfName} books={books.filter((book) => book.shelf === 'currentlyReading')} />
-                                )}
-                                {shelf.shelfName === 'Want To Read' && (
-                                    <BookShelf key={shelf.id} updateState={updateState} shelf={shelf.shelfName} books={books.filter((book) => book.shelf === 'wantToRead')} />
-                                )}
-                                {shelf.shelfName === 'Read' && (
-                                    <BookShelf key={shelf.id} updateState={updateState} shelf={shelf.shelfName} books={books.filter((book) => book.shelf === 'read')} />
-                                )}
+                                <BookShelf key={shelf.id} updateState={updateState} shelf={shelf.shelfName} books={books.filter((book) => book.shelf === shelf.id)} />
                             </div>
                         ))}
                     </div>
@@ -49,7 +41,7 @@ class MainPage extends React.Component {
                     <Link
                         to='/search'
                         className='add-contact'>
-                        <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
+                        <button>Add a book</button>
                     </Link>
                 </div>
             </div>
