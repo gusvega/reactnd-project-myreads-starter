@@ -11,7 +11,6 @@ class SearchPage extends React.Component {
     }
 
     updateQuery = (query) => {
-        console.log(query)
 
         if (query) {
             this.setState({
@@ -19,13 +18,6 @@ class SearchPage extends React.Component {
             })
             BooksAPI.search(query)
                 .then((searchedBooks) => {
-
-                    this.setState(() => ({
-                        books: searchedBooks
-                    }))
-                    console.log('searchedBooks: ', searchedBooks)
-
-
                     if (this.state.books.length > 0) {
                         searchedBooks = query === ''
                             ? searchedBooks
@@ -33,6 +25,9 @@ class SearchPage extends React.Component {
                                 return c.title.toLowerCase().includes(query.toLowerCase())
                             })
                     }
+                    this.setState(() => ({
+                        books: searchedBooks
+                    }))
                 })
         } else {
             this.setState({
@@ -41,14 +36,13 @@ class SearchPage extends React.Component {
             })
         }
 
+        console.log('Update Query: ', this.state.books)
     }
 
     render() {
 
         const { query, books } = this.state
-        const { updateFromSearch, booksFromMainState } = this.props
-
-        console.log('Books: ', books)
+        const { updateMainState } = this.props
 
         return (
             <div>
@@ -81,19 +75,16 @@ class SearchPage extends React.Component {
                                 <div key={book.id} className="book">
 
                                     <div className="book-top">
-                                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks && book.imageLinks.smallThumbnail})` }}></div>
+                                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks && book.imageLinks.smallThumbnail})` }}></div>
 
                                         <div className="book-shelf-changer">
                                             <select
-                                                value={!book.shelf ? 'none' : book.shelf} 
-                                                // defaultValue={'none'}
-                                                onChange={(event) => {
+                                                value={!book.shelf ? 'none' : book.shelf}
+                                                onChange={async (event) => {
                                                     this.shelf = event.target.value
-                                                    BooksAPI.update(book.id, this.shelf)
-                                                    BooksAPI.get(book.id).then((newBook) => {
-                                                        updateFromSearch(newBook)
-                                                    })
-                                                    console.log('booksFromMainState: ', booksFromMainState)
+                                                    await BooksAPI.update(book.id, this.shelf)
+                                                    const newBook = await BooksAPI.get(book.id)
+                                                    updateMainState(newBook)
 
                                                 }}>
                                                 <option value="move" disabled>Move to...</option>

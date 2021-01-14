@@ -37,7 +37,6 @@ class BooksApp extends React.Component {
     this.setState((prevState) => ({
       books: prevState.books.filter((c) => c.id !== newBook.id).concat([newBook])
     }))
-    console.log('Main State', this.state.books)
   }
 
   render() {
@@ -49,7 +48,7 @@ class BooksApp extends React.Component {
         </Route>
 
         <Route exact path='/search' >
-          <SearchPage booksFromMainState={this.state.books} updateFromSearch={this.updateFromSearch}></SearchPage>
+          <SearchPage booksFromMainState={this.state.books} updateMainState={this.updateFromSearch}></SearchPage>
         </Route>
       </div>
     )

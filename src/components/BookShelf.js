@@ -13,17 +13,10 @@ class BookShelf extends React.Component {
 
     shelf = ''
 
-    // handleChange(shelf, book, ){
-    //     this.shelf = shelf
-    //     BooksAPI.update(book.id, this.shelf).then(() => {
-    //         this.props.updateState(book, this.shelf)
-    //     })
-    // }
 
     render() {
 
         const { shelf, books, updateState } = this.props
-        console.log(books)
 
         return (
             <div className="bookshelf">
