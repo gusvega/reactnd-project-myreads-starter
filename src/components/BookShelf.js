@@ -1,7 +1,5 @@
 import React from 'react'
-// import Book from './Book'
 import * as BooksAPI from '../BooksAPI'
-
 
 class BookShelf extends React.Component {
 
@@ -9,7 +7,7 @@ class BookShelf extends React.Component {
 
     render() {
 
-        const { shelf, books, updateState} = this.props
+        const { shelf, books, updateState } = this.props
 
         return (
             <div className="bookshelf">
@@ -45,7 +43,5 @@ class BookShelf extends React.Component {
         )
     }
 }
-
-// {/* <Book key={book.id} bookDetails={book} books={books} updateState={this.props.updateState}></Book> */}
 
 export default BookShelf

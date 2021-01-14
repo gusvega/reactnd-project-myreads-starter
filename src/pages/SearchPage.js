@@ -2,56 +2,48 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from '../BooksAPI'
 
+
 class SearchPage extends React.Component {
 
     state = {
         query: '',
         books: []
     }
-    
-
 
     updateQuery = (query) => {
         console.log(query)
 
-        if(query){
+        if (query) {
             BooksAPI.search(query)
-            .then((searchedBooks) => {
+                .then((searchedBooks) => {
 
-                this.setState(() => ({
-                    query: query.trim(),
-                    books: searchedBooks
-                }))
+                    this.setState(() => ({
+                        query: query.trim(),
+                        books: searchedBooks
+                    }))
 
-                if(this.state.books.length > 0){
-                    searchedBooks = query === ''
-                    ? searchedBooks
-                    : searchedBooks.filter((c) => {
-                        return c.title.toLowerCase().includes(query.toLowerCase())
-                    })
-                }
-                
- 
-                console.log(searchedBooks)
-            })
-        }else{
+                    if (this.state.books.length > 0) {
+                        searchedBooks = query === ''
+                            ? searchedBooks
+                            : searchedBooks.filter((c) => {
+                                return c.title.toLowerCase().includes(query.toLowerCase())
+                            })
+                    }
+                })
+        } else {
             this.setState({
                 query: '',
                 books: [],
-                booksFromMainState: [] 
+                booksFromMainState: []
             })
-            console.log('ERROR')
         }
-        
+
     }
 
     render() {
 
-
         const { query, books } = this.state
-        const { updateFromSearch, booksFromMainState } = this.props
-
-        console.log('booksFromMainState', booksFromMainState)
+        const { updateFromSearch } = this.props
 
         return (
             <div>
@@ -77,38 +69,33 @@ class SearchPage extends React.Component {
                 </div>
                 <div className="search-books-results">
                     <ol className="books-grid">
-                        { books.length > 0 ?
+                        {books.length > 0 ?
                             books.map((book) => (
-                            <div key={book.id} className="book">
+                                <div key={book.id} className="book">
 
-                                <div className="book-top">
-                                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }}></div>
-                                    <div className="book-shelf-changer">
-                                        <select 
-                                        onChange={(event) => {
-                                            this.shelf = event.target.value
-                                            BooksAPI.update(book.id, this.shelf)
-                                            BooksAPI.get(book.id).then((newBook) => {
-                                                updateFromSearch(newBook)
-                                                console.log('mainStateBooks', newBook)
-                                            }) 
-
-
-
-                                            
-                                        }}>
-\                                            <option value="move" disabled>Move to...</option>
-                                            <option value="currentlyReading" >Currently Reading</option>
-                                            <option value="wantToRead" >Want to Read</option>
-                                            <option value="read" >Read</option>
-                                            <option value="none">None</option>
-                                        </select>
+                                    <div className="book-top">
+                                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }}></div>
+                                        <div className="book-shelf-changer">
+                                            <select
+                                                onChange={(event) => {
+                                                    this.shelf = event.target.value
+                                                    BooksAPI.update(book.id, this.shelf)
+                                                    BooksAPI.get(book.id).then((newBook) => {
+                                                        updateFromSearch(newBook)
+                                                    })
+                                                }}>
+                                                <option value="move" disabled>Move to...</option>
+                                                <option value="currentlyReading" >Currently Reading</option>
+                                                <option value="wantToRead" >Want to Read</option>
+                                                <option value="read" >Read</option>
+                                                <option value="none">None</option>
+                                            </select>
+                                        </div>
                                     </div>
+                                    <div className="book-title">{book.title}</div>
+                                    <div className="book-authors">{book.authors}</div>
                                 </div>
-                                <div className="book-title">{book.title}</div>
-                                <div className="book-authors">{book.authors}</div>
-                            </div>
-                        )) : <p>Nothing here yet</p>}
+                            )) : <p>Nothing here yet</p>}
                     </ol>
                 </div>
             </div>

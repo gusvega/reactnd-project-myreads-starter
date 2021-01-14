@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import BookShelf from '../../components/BookShelf'
+import BookShelf from '../components/BookShelf'
 class MainPage extends React.Component {
 
     shelves = [
@@ -20,10 +20,8 @@ class MainPage extends React.Component {
 
     render() {
 
-        
-        const { books, updateState } = this.props
-        console.log('BOOKS-', books)
 
+        const { books, updateState } = this.props
 
         return (
             <div className="list-books">
@@ -38,10 +36,10 @@ class MainPage extends React.Component {
                                     <BookShelf key={shelf.id} updateState={updateState} shelf={shelf.shelfName} books={books.filter((book) => book.shelf === 'currentlyReading')} />
                                 )}
                                 {shelf.shelfName === 'Want To Read' && (
-                                    <BookShelf key={shelf.id} updateState={updateState} shelf={shelf.shelfName} books={books.filter((book) => book.shelf === 'wantToRead')}/>
+                                    <BookShelf key={shelf.id} updateState={updateState} shelf={shelf.shelfName} books={books.filter((book) => book.shelf === 'wantToRead')} />
                                 )}
                                 {shelf.shelfName === 'Read' && (
-                                    <BookShelf key={shelf.id} updateState={updateState} shelf={shelf.shelfName} books={books.filter((book) => book.shelf === 'read')}/>
+                                    <BookShelf key={shelf.id} updateState={updateState} shelf={shelf.shelfName} books={books.filter((book) => book.shelf === 'read')} />
                                 )}
                             </div>
                         ))}
