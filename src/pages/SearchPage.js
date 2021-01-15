@@ -48,9 +48,7 @@ class SearchPage extends React.Component {
         if (books.length > 0) {
             verifiedBooks = books.map(book => {
                 booksFromMainState.forEach(bookOnShelf => {
-                    // check wether book is already on shelf
                     if (book.id === bookOnShelf.id) {
-                        // if yes get the shelf data from BooksOnShelf
                         book.shelf = bookOnShelf.shelf;
                     }
                 });
