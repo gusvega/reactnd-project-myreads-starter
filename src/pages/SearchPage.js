@@ -42,7 +42,21 @@ class SearchPage extends React.Component {
     render() {
 
         const { query, books } = this.state
-        const { updateMainState } = this.props
+        const { updateMainState, booksFromMainState } = this.props
+
+        let verifiedBooks = [];
+        if (books.length > 0) {
+            verifiedBooks = books.map(book => {
+                booksFromMainState.forEach(bookOnShelf => {
+                    // check wether book is already on shelf
+                    if (book.id === bookOnShelf.id) {
+                        // if yes get the shelf data from BooksOnShelf
+                        book.shelf = bookOnShelf.shelf;
+                    }
+                });
+                return book;
+            });
+        }
 
         return (
             <div>
@@ -68,9 +82,9 @@ class SearchPage extends React.Component {
                 </div>
                 <div className="search-books-results">
                     <ol className="books-grid">
-                        {books.length > 0 ?
+                        {verifiedBooks.length > 0 ?
 
-                            books.map((book) => (
+                            verifiedBooks.map((book) => (
 
                                 <div key={book.id} className="book">
 
